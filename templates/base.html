@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <a href="{{ url_for('dashboard') }}" class="logo">Expense Tracker</a>
+                <div class="nav-links">
+                    {% if 'user_id' in session %}
+                        <a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a>
+                        <a href="{{ url_for('add_expense') }}"><i class="fas fa-plus"></i> Add Expense</a>
+                        <a href="{{ url_for('add_reservation') }}"><i class="fas fa-piggy-bank"></i> Reserve Amount</a>
+                        <a href="{{ url_for('view_expenses') }}"><i class="fas fa-list"></i> View Expenses</a>
+                        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">Login</a>
+                        <a href="{{ url_for('register') }}">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Expense Tracker</p>
+        </div>
+    </footer>
+</body>
+</html>
